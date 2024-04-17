@@ -1,0 +1,16 @@
+<odoo>
+    <record id="crm_stage_tree_inherit" model="ir.ui.view">
+        <field name="name">crm.stages.inherit</field>
+        <field name="model">crm.stage</field>
+        <field name="inherit_id" ref="crm.crm_stage_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="editable">bottom</attribute>
+            </xpath>
+            <xpath expr="//field[@name='team_id']" position="after">
+                <field name="color" widget="color_picker"/>
+                <field name="stage_selection"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

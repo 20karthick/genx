@@ -1,0 +1,120 @@
+<odoo>
+    <record model="ir.ui.view" id="work_order_desin_tree">
+        <field name="name">Work Order Design Tree</field>
+        <field name="model">work.order.design</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="product_id"/>
+                <field name="date"/>
+                <field name="partner_id"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="work_order_design_form">
+        <field name="name">Work Order Desin Form</field>
+        <field name="model">work.order.design</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button string="Sent to Production Head" name="sent_production_head" type="object" class="btn-primary"
+                            data-hotkey="q" states="draft"/>
+                    <button string="Approve" name="approve_design" type="object" class="btn-primary"
+                            data-hotkey="q" states="waiting_for_approval"/>
+                    <button name="action_create_mdn" string="Create MDN" type="object" class="btn-primary"
+                        attrs="{'invisible': [('state', 'not in', ['approve'])]}"/>
+                    <button string="Reject" class="btn-secondary" type="object" name="reject_design" states="waiting_for_approval"/>
+
+                    <button string="Cancel" class="btn-secondary" type="object" name="cancel_design" states="approve"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="product_id"/>
+                            <field name="sales_person"/>
+                            <field name="sale_id"/>
+                        </group>
+                        <group>
+                            <field name="date"/>
+                            <field name="partner_id"/>
+                            <field name="mdn_id"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Design">
+                            <field name="operation_ids"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record model="ir.actions.act_window" id="mrp_workorder_design">
+        <field name="name">Work Order Design</field>
+        <field name="res_model">work.order.design</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="work_order_design_lines_form" model="ir.ui.view">
+        <field name="name">work.order.design.lines.form</field>
+        <field name="model">work.order.design.lines</field>
+        <field name="arch" type="xml">
+            <form string="Work Order Design">
+                <sheet>
+                    <group>
+                        <group name="description">
+                            <field name="name"/>
+                            <field name="workcenter_id"/>
+                        </group>
+                        <group name="workorder">
+
+
+                            <field name="time_cycle_manual" widget="float_time"/>
+
+
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Work Sheet" name="worksheet">
+                            <group>
+                                <field name="worksheet_type" widget="radio"/>
+                                <field name="worksheet" help="Upload your PDF file." widget="pdf_viewer"
+                                       attrs="{'invisible':  [('worksheet_type', '!=', 'pdf')], 'required':  [('worksheet_type', '=', 'pdf')]}"/>
+                                <field name="worksheet_google_slide" placeholder="Google Slide Link"
+                                       widget="embed_viewer"
+                                       attrs="{'invisible':  [('worksheet_type', '!=', 'google_slide')], 'required': [('worksheet_type', '=', 'google_slide')]}"/>
+                                <field name="note" attrs="{'invisible':  [('worksheet_type', '!=', 'text')]}"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+    <record model="ir.actions.act_window" id="mrp_workorder_design_lines">
+        <field name="name">Work Order Design Lines</field>
+        <field name="res_model">work.order.design.lines</field>
+        <field name="view_mode">form</field>
+    </record>
+
+    <record id="sequence_work_order_design" model="ir.sequence">
+        <field name="name">Work Order Design</field>
+        <field name="code">work.order.design</field>
+        <field name="active">TRUE</field>
+        <field name="prefix">WO/D/</field>
+        <field name="padding">4</field>
+        <field name="number_next">1</field>
+        <field name="number_increment">1</field>
+    </record>
+
+
+    <menuitem id="menu_mrp_workorder_design"
+              name="Work Orders Design"
+              action="mrp_workorder_design"
+              parent="mrp.menu_mrp_manufacturing"
+    />
+</odoo>

@@ -1,0 +1,5 @@
+<odoo>
+    <record model="ir.ui.menu" id="mrp.menu_mrp_bom_form_action">
+        <field name="name">Material Demand Notice</field>
+    </record>
+</odoo>

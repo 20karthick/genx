@@ -1,0 +1,27 @@
+<odoo>
+    <record id="view_order_form_with_status" model="ir.ui.view">
+        <field name="name">delivery.sale.order.form.status</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <button name="action_confirm" position="before">
+                <button name="action_approve" string="Approve" type="object" class="btn-primary"
+                        attrs="{'invisible': [('state', 'not in', ['draft'])]}"/>
+
+            </button>
+            <xpath expr="//button[@id='action_confirm']" position="replace">
+            </xpath>
+            <button name="action_confirm" position="replace">
+                <button name="action_confirm" data-hotkey="v" string="Confirm" type="object"
+                        context="{'validate_analytic': True}" class="btn-primary"
+                        attrs="{'invisible': [('state', 'not in', ['approved'])]}"/>
+            </button>
+            <field name="state" position="replace">
+                <field name="state" widget="statusbar" statusbar_visible="draft,sent,approved,sale"/>
+            </field>
+            <field name="partner_id" position="after">
+                <field name="design_ids" widget="many2many_tags"/>
+            </field>
+        </field>
+    </record>
+</odoo>

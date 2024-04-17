@@ -1,0 +1,55 @@
+<odoo>
+
+    <record id="crm_reveal_lead_opportunity_form_inherit" model="ir.ui.view">
+        <field name="name">crm.lead.inherited.crm.inherit</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='priority']" position="replace">
+
+            </xpath>
+            <xpath expr="//field[@name='tag_ids']" position="after">
+                <field name="priority_id" widget="many2many_tags"
+                       options="{'color_field': 'color','no_create_edit': True}"/>
+            </xpath>
+            <xpath expr="//group[@name='lead_priority']" position="before">
+                <group name="lead_priority_many" attrs="{'invisible': [('type', '=', 'opportunity')]}">
+                    <field name="priority_id" widget="many2many_tags"
+                           options="{'color_field': 'color','no_create_edit': True}"/>
+                    <field name="tag_ids" widget="many2many_tags"
+                           options="{'color_field': 'color', 'no_create_edit': True}"/>
+                </group>
+            </xpath>
+            <xpath expr="//group[@name='lead_priority']" position="replace">
+
+            </xpath>
+        </field>
+    </record>
+    <record id="crm_reveal_lead_opportunity_form_inherit1" model="ir.ui.view">
+        <field name="name">crm.lead.inherited.crm.inherit1</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="sale_crm.crm_case_form_view_oppor"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_sale_quotations_new']" position="before">
+                <button string="Approve" name="action_approve_lead" type="object" class="oe_highlight"
+                        title="Approve lead"
+                        attrs="{'invisible': ['|', ('type', '=', 'lead'), '&amp;', ('probability', '=', 0), ('active', '=', False)]}"/>
+            </xpath>
+        </field>
+    </record>
+    <record model="ir.ui.menu" id="crm.crm_menu_leads">
+        <field eval="[(6,0,[ref('custom_crm.group_crm_bd_team')])]"
+               name="groups_id"/>
+    </record>
+    <record model="ir.actions.act_window" id="crm.crm_lead_action_pipeline">
+        <field name="view_mode">tree,graph,form,calendar,kanban</field>
+    </record>
+    <menuitem
+            id="crm.menu_crm_lead_stage_act"
+            name="Stages"
+            sequence="0"
+            parent="crm.menu_crm_config_lead"
+            action="crm.crm_stage_action"
+            groups="-base.group_no_one"/>
+
+</odoo>

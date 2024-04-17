@@ -1,0 +1,53 @@
+<odoo>
+    <record id="view_purchase_order_form_button" model="ir.ui.view">
+        <field name="name">purchase.order.form.button</field>
+        <field name="model">purchase.requisition</field>
+        <field name="inherit_id" ref="purchase_requisition.view_purchase_requisition_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_in_progress']" position="after">
+                <button name="button_send_to_approve" type="object"
+                        string="Send to Approve" class="oe_highlight" states="in_progress,ongoing"/>
+                <button name="first_level_approve" type="object" states="waiting_for_approval"
+                        string="Approved By Manager" class="oe_highlight"/>
+                <button name="second_level_approve" type="object" states="first_level_approval"
+                        class="oe_highlight" string="Approved By Production Head"/>
+                <button name="create_cheque" type="object" states="second_level_approval"
+                        class="oe_highlight" string="Create Cheque"/>
+                <button name="submit_cheque_approve" type="object" states="create_cheque"
+                        class="oe_highlight" string="Submit Cheque For Approve"/>
+                <button name="cheque_approved" type="object" states="submt_cheque_for_approval"
+                        class="oe_highlight" string="Approve Cheque"/>
+
+
+            </xpath>
+<!--            <xpath expr="//button[@string='New Quotation']" position="attributes">-->
+<!--                <attribute name="attrs">{'invisible': [('state', '!=', 'cheque_approves')]}-->
+<!--                </attribute>-->
+<!--            </xpath>-->
+            <xpath expr="//button[@name='action_open']" position="replace">
+            </xpath>
+            <field name="state" position="replace">
+                <field name="state" widget="statusbar"
+                       statusbar_visible=" "/>
+            </field>
+            <field name="state_blanket_order" position="replace"/>
+            <field name="vendor_id" position="after">
+                <field name="total_amount"
+                       />
+            </field>
+        </field>
+    </record>
+    <record id="view_purchase_order_inherit_button" model="ir.ui.view">
+        <field name="name">Purchase Order Inherit Buttonr</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <button name="action_create_invoice" position="after">
+                <button name="action_mdn_done" string="Mark MDN Done" type="object" class="oe_highlight"
+                        context="{'create_bill':True}"
+                        attrs="{'invisible': ['|', ('state', 'not in', ('purchase', 'done')), ('invoice_status', 'in', ('no', 'invoiced'))]}"
+                />
+            </button>
+        </field>
+    </record>
+</odoo>

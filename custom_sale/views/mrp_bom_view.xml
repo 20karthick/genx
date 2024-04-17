@@ -1,0 +1,28 @@
+<odoo>
+    <record id="mrp_bom_form_view_inherited_button" model="ir.ui.view">
+        <field name="name">mrp.bom.form.inherited.button</field>
+        <field name="model">mrp.bom</field>
+        <field name="inherit_id" ref="mrp.mrp_bom_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="before">
+                <header>
+                <button string="Submit For Approval" name="submit_for_approval" type="object" class="btn-primary"
+                        states="draft"/>
+                <button string="Approve" name="action_approve" type="object" class="btn-primary"
+                        states="waiting_for_approval"/>
+                <button string="Reject" name="action_reject" type="object" class="btn-primary"
+                        states="waiting_for_approval"/>
+                <button string="Create RFQ" name="create_rfq" type="object" class="btn-primary"
+                        states="approve"/>
+
+                <field name="state" widget="statusbar"/>
+                </header>
+
+            </xpath>
+<!--            <field name="product_qty" positiion="after">-->
+<!--                <field name="partner_id" attrs="{'invisible': [('state', '!=', 'approve')]}"/>-->
+
+<!--            </field>-->
+        </field>
+    </record>
+</odoo>
